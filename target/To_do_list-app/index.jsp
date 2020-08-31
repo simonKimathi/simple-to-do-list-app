@@ -13,6 +13,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
+        body {
+            background-image: url("background.jpg");
+        }
         /* Remove the navbar's default margin-bottom and rounded borders */
         .navbar {
             margin-bottom: 0;
@@ -48,157 +51,154 @@
 </head>
 <body>
 
-<nav class="navbar navbar-inverse">
+<%--<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <img class="navbar-brand" src="logo.png" alt="my to do app" />
             <div class="current_date"></div>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
-            <%--<ul class="nav navbar-nav">
+            &lt;%&ndash;<ul class="nav navbar-nav">
               <li class="active"><a href="#">Home</a></li>
               <li><a href="#">About</a></li>
               <li><a href="#">Projects</a></li>
               <li><a href="#">Contact</a></li>
-            </ul>--%>
-            <%--<ul class="nav navbar-nav navbar-right">
+            </ul>&ndash;%&gt;
+            &lt;%&ndash;<ul class="nav navbar-nav navbar-right">
               <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            </ul>--%>
+            </ul>&ndash;%&gt;
         </div>
     </div>
-</nav>
+</nav>--%>
 
 <div class="container-fluid text-center">
     <div class="row content">
-<%--        <div class="col-sm-2 sidenav">
-        </div>--%>
-        <div class="col-sm-8 text-left">
-            <h1>Welcome</h1><br>
-            <a href="add.jsp"><button type="button"  class="btn btn-primary" onclick="return confirm('Are you sure you want to add a new todo?')" >Add a To Do Task</button></a><br><br>
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">pending to do tasks
-                                <span class="badge badge-light"><%=session.getAttribute("count")%></span></a>
-                        </h4>
-                    </div>
-                    <div id="collapse1" class="panel-collapse collapse in">
-                        <div class="panel-body">
+        <%--        <div class="col-sm-2 sidenav">
+                </div>--%>
+        <div class=”row” >
+            <div class="align-items-center" style="padding-top: 40px;margin-left: 40px;margin-right: 40px">
+                <h1>Welcome</h1><br>
+                <a href="add.jsp"><button type="button"  class="btn btn-primary" onclick="return confirm('Are you sure you want to add a new todo?')" >Add a To Do Task</button></a><br><br>
+                <div class="panel-group" id="accordion" >
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title h4-responsive">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">to do tasks</a>
+                            </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapsed in">
+                            <div class="panel-body">
+                                <%--start of first section--%>
+                                <a href="#pending" class="btn btn-primary btn-block pg5" role="Toggle" data-toggle="collapse">pending to do task</a>
+                                <div class="collapsed in" id="pending">
+
+                                    <table class = "table table-bordered table-stripped table-condensed" align = "center">
+                                        <tr>
+                                            <thead class="thead-dark">
+                                            <%-- <th scope="col">task no</th>--%>
+                                            <th scope="col">task name</th>
+                                            <th scope="col">task description</th>
+                                            <th scope="col">due date</th>
+                                            <th scope="col">Actions</th>
+                                            </thead>
+                                        </tr>
+                                        <%
+                                            try
+                                            {
+                                                DbConnection dbConnection2 = new DbConnection("jdbc:mysql://localhost:3306/to_Do","root","camoncxair");
+                                                String query ="pending";
+                                                PreparedStatement statement = dbConnection2.connect().prepareStatement("Select * from todos where status=?");
+                                                statement.setString(1,query);
+                                                ResultSet result = statement.executeQuery();
+                                                int count=0;
+                                                while(result.next())
+                                                {
+                                                    count++;
+                                        %>
+                                        <tr>
+                                            <%--<td><%=count%></td>--%>
+                                            <td><%=result.getString("title")%></td>
+                                            <td><%=result.getString("description")%></td>
+                                            <td><%=result.getString("dueDate")%></td>
+                                            <td>
+                                                <a href="update.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-success" onclick="return confirm('are you sure the task is complete?')">complete task</button></a>
+                                                <a href="delete.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete task</button></a>
+                                            </td>
+
+                                        </tr>
+                                        <%
+                                                }
+                                                session.setAttribute("count",count);
+                                            }
+                                            catch(Exception ex)
+                                            {
+                                                out.println("Exception:" +ex.getMessage());
+                                                ex.printStackTrace();
+                                            }
+                                        %>
 
 
-                            <table class = "table table-bordered table-stripped table-condensed" align = "center">
-                                <tr>
-                                    <thead class="thead-dark">
-                                    <%-- <th scope="col">task no</th>--%>
-                                    <th scope="col">task name</th>
-                                    <th scope="col">task description</th>
-                                    <th scope="col">due date</th>
-                                    <th scope="col">Actions</th>
-                                    </thead>
-                                </tr>
-                                <%
-                                    try
-                                    {
-                                        DbConnection dbConnection2 = new DbConnection("jdbc:mysql://localhost:3306/to_Do","root","camoncxair");
-                                        String query ="pending";
-                                        PreparedStatement statement = dbConnection2.connect().prepareStatement("Select * from todos where status=?");
-                                        statement.setString(1,query);
-                                        ResultSet result = statement.executeQuery();
-                                        int count=0;
-                                        while(result.next())
-                                        {
-                                            count++;
-                                %>
-                                <tr>
-                                    <%--<td><%=count%></td>--%>
-                                    <td><%=result.getString("title")%></td>
-                                    <td><%=result.getString("description")%></td>
-                                    <td><%=result.getString("dueDate")%></td>
-                                    <td>
-                                        <a href="update.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-success" onclick="return confirm('are you sure the task is complete?')">complete task</button></a>
-                                        <a href="delete.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete task</button></a>
-                                    </td>
+                                    </table>
+                                </div>
+                                <%--end of first section--%>
+                                <%--start of second section--%>
 
-                                </tr>
-                                <%
-                                        }
-                                        session.setAttribute("count",count);
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        out.println("Exception:" +ex.getMessage());
-                                        ex.printStackTrace();
-                                    }
-                                %>
+                                <a href="#complete" class="btn btn-primary btn-block pg5" role="Toggle" data-toggle="collapse">complete to do task</a>
+                                <div class="collapsed in" id="complete">
+                                    <table class = "table table-bordered table-stripped table-condensed" align = "center">
+                                        <tr>
+                                            <thead class="thead-dark">
+                                            <%-- <th scope="col">task no</th>--%>
+                                            <th scope="col">task name</th>
+                                            <th scope="col">task description</th>
+                                            <th scope="col">due date</th>
+                                            <th scope="col">Actions</th>
+                                            </thead>
+                                        </tr>
+                                        <%
+                                            try
+                                            {
+                                                DbConnection dbConnection2 = new DbConnection("jdbc:mysql://localhost:3306/to_Do","root","camoncxair");
+                                                String query ="complete";
+                                                PreparedStatement statement = dbConnection2.connect().prepareStatement("Select * from todos where status=?");
+                                                statement.setString(1,query);
+                                                ResultSet result = statement.executeQuery();
+                                                int count1=0;
+                                                while(result.next())
+                                                {
+                                                    count1++;
+                                        %>
+                                        <tr>
+                                            <%--<td><%=count%></td>--%>
+                                            <td><%=result.getString("title")%></td>
+                                            <td><%=result.getString("description")%></td>
+                                            <td><%=result.getString("dueDate")%></td>
+                                            <td>
+                                                <a href="delete.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete task</button></a>
+                                            </td>
+
+                                        </tr>
+                                        <%
+                                                }
+                                                session.setAttribute("count1",count1);
+                                            }
+                                            catch(Exception ex)
+                                            {
+                                                out.println("Exception:" +ex.getMessage());
+                                                ex.printStackTrace();
+                                            }
+                                        %>
 
 
-                            </table>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
+
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Complete to do task<span class="badge badge-light"><%=session.getAttribute("count1")%></span></a>
-                        </h4>
-                    </div>
-                    <div id="collapse2" class="panel-collapse collapse">
-                        <div class="panel-body">
-
-
-                            <table class = "table table-bordered table-stripped table-condensed" align = "center">
-                                <tr>
-                                    <thead class="thead-dark">
-                                    <%-- <th scope="col">task no</th>--%>
-                                    <th scope="col">task name</th>
-                                    <th scope="col">task description</th>
-                                    <th scope="col">due date</th>
-                                    <th scope="col">Actions</th>
-                                    </thead>
-                                </tr>
-                                <%
-                                    try
-                                    {
-                                        DbConnection dbConnection2 = new DbConnection("jdbc:mysql://localhost:3306/to_Do","root","camoncxair");
-                                        String query ="complete";
-                                        PreparedStatement statement = dbConnection2.connect().prepareStatement("Select * from todos where status=?");
-                                        statement.setString(1,query);
-                                        ResultSet result = statement.executeQuery();
-                                        int count1=0;
-                                        while(result.next())
-                                        {
-                                            count1++;
-                                %>
-                                <tr>
-                                    <%--<td><%=count%></td>--%>
-                                    <td><%=result.getString("title")%></td>
-                                    <td><%=result.getString("description")%></td>
-                                    <td><%=result.getString("dueDate")%></td>
-                                    <td>
-                                         <a href="delete.jsp?id=<%=result.getString("id") %>"><button type="button" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete task</button></a>
-                                    </td>
-
-                                </tr>
-                                <%
-                                        }
-                                        session.setAttribute("count1",count1);
-                                    }
-                                    catch(Exception ex)
-                                    {
-                                        out.println("Exception:" +ex.getMessage());
-                                        ex.printStackTrace();
-                                    }
-                                %>
-
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-
-
             </div>
         </div>
         <%--<div class="col-sm-2 sidenav">

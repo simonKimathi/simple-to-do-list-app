@@ -9,11 +9,16 @@
 <html>
 <head>
     <title>add a to do</title>
+    <style>
+        body{
+            background-image: url("add.jpg");
+        }
+    </style>
 </head>
-<body>
+<body style="padding-top: 100px">
 <div class="current_date"></div>
 <!-- Material form contact -->
-<div class=" card container-fluid col-sm-8 text-left text-center" style="padding-top: 20px">
+<div class=" card container-fluid col-sm-8 text-left text-center" >
 
     <h5 class="card-header info-color white-text text-center py-4">
         <strong>add a to do</strong>
