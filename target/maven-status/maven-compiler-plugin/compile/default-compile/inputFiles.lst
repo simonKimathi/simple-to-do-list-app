@@ -1,4 +1,4 @@
-/home/symoh/workspace/To_do_list-app/src/main/java/com/toDo/app/model/Task.java
-/home/symoh/workspace/To_do_list-app/src/main/java/com/toDo/app/servlet/taskServlet.java
-/home/symoh/workspace/To_do_list-app/src/main/java/com/toDo/app/utilities/Listener/DatabaseBootstrap.java
-/home/symoh/workspace/To_do_list-app/src/main/java/com/toDo/app/utilities/DbConnection.java
+/home/symoh/workspace/simple-to-do-list-app/src/main/java/com/toDo/app/servlet/taskServlet.java
+/home/symoh/workspace/simple-to-do-list-app/src/main/java/com/toDo/app/utilities/Listener/DatabaseBootstrap.java
+/home/symoh/workspace/simple-to-do-list-app/src/main/java/com/toDo/app/utilities/DbConnection.java
+/home/symoh/workspace/simple-to-do-list-app/src/main/java/com/toDo/app/model/Task.java
